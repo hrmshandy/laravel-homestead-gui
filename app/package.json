@@ -1,0 +1,15 @@
+{
+  "name": "homestead-gui-2",
+  "version": "0.0.0",
+  "description": "A GUI wrapper for Laravel Homestead",
+  "main": "electron.js",
+  "dependencies": {
+    "vue": "next",
+    "vue-electron": "^1.0.0",
+    "vue-resource": "^0.7.0",
+    "vue-router": "next",
+    "vuex": "next"
+  },
+  "devDependencies": {},
+  "author": "Chris E <chris@sourcecube.de>"
+}
