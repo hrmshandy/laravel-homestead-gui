@@ -37,12 +37,12 @@
       <template v-for="(map, key) in item">
         <div class="labeledInput">
           <label>{{ capitalize(key) }}</label>
-          <input type="text" v-bind:value="map" v-on:blur="doneEdit">
+          <input type="text" v-bind:value="map" v-on:blur="doneEdit(key, $event)">
         </div>
       </template>
     </template>
     <template v-else>
-      <input type="text" v-bind:value="item" v-on:blur="doneEdit">
+      <input type="text" v-bind:value="item" v-on:blur="doneEdit(null, $event)">
     </template>
     <button v-on:click="remove(category, item)" class="material-icons delete">delete_forever</button>
   </div>
@@ -65,10 +65,11 @@
         'changeSetting',
         'deleteSetting',
       ]),
-      doneEdit(event) {
+      doneEdit(key, event) {
         this.changeSetting({
           key: this.category,
           value: event.target.value,
+          map: key,
           index: this.index,
         });
       },

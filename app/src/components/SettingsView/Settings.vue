@@ -5,9 +5,6 @@
     box-shadow: 0px 0px 5px rgba(0,0,0,.1);
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    background-color: #4CAF50;
     cursor: pointer;
   }
 
@@ -15,12 +12,13 @@
     color: white;
     text-align: center;
     width: 100%;
+    background-color: #4CAF50;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 40px;
   }
 
   .category {
-    position: absolute;
-    left: 0px;
-    top: 0px;
     background: white;
     width: 100%;
     height: 100%;
@@ -32,24 +30,6 @@
   .category h3 {
     text-align: center;
     margin-bottom: 30px;
-  }
-
-  .category__close {
-    position: absolute;
-    right: 0;
-    top: 0;
-    font-weight: 100;
-    width: 45px;
-    height: 45px;
-    background: transparent;
-    border: none;
-    font-size: 50px;
-    cursor: pointer;
-    transform: rotate(45deg);
-  }
-
-  .category__close:focus {
-    outline: 0;
   }
 
   input[type=text] {
@@ -88,33 +68,27 @@
 </style>
 <template>
   <div class="setting">
-    <div class="setting__content" v-on:click.self="toggleShow">
-      <header class="category__header" v-on:click.self="toggleShow">
+    <div class="setting__content">
+      <header class="category__header">
         {{ capitalize(category) }}
       </header>
-      <transition name="fade">
-        <div class="category" v-show="show" v-bind:class="['category-' + category]" v-on:keyup.esc="toggleShow">
-          <h3>{{ capitalize(category) }}</h3>
-          <button class="category__close" v-on:click="toggleShow">
-            +
-          </button>
-          <template v-if="isArray(value)">
-            <setting-pairInput v-for="(item, index) in value"
-                               :item="item"
-                               :index="index"
-                               :category="category">
-            </setting-pairInput>
-            <add-setting :category="category"></add-setting>
-          </template>
-          <template v-else>
-            <setting-input
-                    v-model="value"
-                    :category="category"
-                    :type="isBoolean(value) ? 'checkbox' : 'text'">
-            </setting-input>
-          </template>
-        </div>
-      </transition>
+      <div class="category" v-bind:class="['category-' + category]">
+        <template v-if="isArray(value)">
+          <setting-pairInput v-for="(item, index) in value"
+                             :item="item"
+                             :index="index"
+                             :category="category">
+          </setting-pairInput>
+          <add-setting :category="category"></add-setting>
+        </template>
+        <template v-else>
+          <setting-input
+                  v-model="value"
+                  :category="category"
+                  :type="isBoolean(value) ? 'checkbox' : 'text'">
+          </setting-input>
+        </template>
+      </div>
     </div>
   </div>
 </template>
@@ -127,27 +101,14 @@
   export default {
     props: ['value', 'category'],
     data() {
-      return {
-        show: false,
-      };
+      return {};
     },
     components: {
       SettingInput,
       SettingPairInput,
       AddSetting,
     },
-    mounted() {
-      document.addEventListener('keydown', this.closeCategory);
-    },
-    destroyed() {
-      document.removeEventListener('keydown', this.closeCategory);
-    },
     methods: {
-      closeCategory(event) {
-        if (this.show && event.keyCode === 27) {
-          this.toggleShow();
-        }
-      },
       isObject(value) {
         return _.isObject(value);
       },
@@ -165,9 +126,6 @@
       },
       uppercase(string) {
         return _.upperCase(string);
-      },
-      toggleShow() {
-        this.show = !this.show;
       },
     },
   };

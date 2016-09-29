@@ -7,3 +7,5 @@ export const allSettings = state => state.settings.all;
 
 export const consoleShow = state => state.console.show;
 export const runProvisioning = state => state.console.runProvisioning;
+
+export const getMachineStatus = state => state.machine.status;

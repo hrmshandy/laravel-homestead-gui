@@ -14,7 +14,11 @@ const mutations = {
   },
   [types.CHANGE_SETTING](state, { payload }) {
     if (payload.hasOwnProperty('index')) {
-      state.all[payload.key][payload.index] = payload.value;
+      if (payload.hasOwnProperty('map') && payload.map !== null) {
+        state.all[payload.key][payload.index][payload.map] = payload.value;
+      } else {
+        state.all[payload.key][payload.index] = payload.value;
+      }
     } else {
       state.all[payload.key] = payload.value;
     }

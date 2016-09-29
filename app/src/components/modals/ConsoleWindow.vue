@@ -56,11 +56,11 @@
   </transition>
 </template>
 <script>
-  const spawn = require('child_process').spawn;
+  const childProcess = require('child_process');
   import { mapGetters } from 'vuex';
 
   export default {
-    name: 'console',
+    name: 'console-window',
     computed: {
       ...mapGetters({
         show: 'consoleShow',
@@ -92,7 +92,7 @@
     },
     methods: {
       startProvisioning() {
-        const vagrant = spawn('vagrant', ['provision'], {
+        const vagrant = childProcess.spawn('vagrant', ['provision'], {
           cwd: `${process.env.HOME}/Homestead`,
         });
 
