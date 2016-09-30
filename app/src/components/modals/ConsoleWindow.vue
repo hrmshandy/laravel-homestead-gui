@@ -58,6 +58,8 @@
 <script>
   const childProcess = require('child_process');
   import { mapGetters } from 'vuex';
+  const { ipcRenderer } = require('electron');
+
 
   export default {
     name: 'console-window',
@@ -92,26 +94,14 @@
     },
     methods: {
       startProvisioning() {
-        const vagrant = childProcess.spawn('vagrant', ['provision'], {
-          cwd: `${process.env.HOME}/Homestead`,
-        });
-
-        vagrant.stdout.on('data', (data) => {
-          const stringOutput = data.toString();
-          this.messages.push(stringOutput);
-        });
-
-        vagrant.stderr.on('data', (data) => {
-          this.messages.push(`Ooops something went wrong: ${data}`);
-        });
-
-        vagrant.on('close', () => {
-          this.messages.push('<=======================>');
-          this.messages.push('Finished provisioning.');
+        ipcRenderer.on('run-provisioning', (error, arg) => {
+          this.messages.push(arg);
           this.$nextTick(() => {
             this.consoleWindow.scrollTop = this.consoleWindow.scrollHeight + 300;
           });
         });
+
+        ipcRenderer.send('run-provisioning', 'start');
       },
       close() {
         this.$store.dispatch('toggleConsole', { show: false });

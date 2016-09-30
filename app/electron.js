@@ -30,7 +30,6 @@ function createWindow () {
 
   mainWindow.loadURL(config.url)
 
-
   if (process.env.NODE_ENV === 'development') {
     BrowserWindow.addDevToolsExtension(path.join(__dirname, '../node_modules/devtron'))
 
@@ -66,16 +65,42 @@ app.on('activate', () => {
  * HANDLE RENDER PROCESS MESSAGES
  */
 ipcMain.on('machine-status', (event, arg) => {
+  process.env = arg;
   const vagrant = childProcess.spawn('vagrant', ['status'], {
     cwd: `${arg.HOME}/Homestead`,
-    env: arg,
   }).on('error', function( err ){ throw err });
 
   vagrant.stdout.on('data', (data) => {
+    event.sender.send('machine-status', data.toString())
     const regex = /default\s+(\w+)/g
     const status = data.toString()
     const matches = regex.exec(status)
 
     event.sender.send('machine-status', matches[1])
   })
+
+  vagrant.stderr.on('data', (data) => {
+    event.sender.send('machine-status', data.toString())
+  })
+
+})
+
+
+ipcMain.on('run-provisioning', (event, arg) => {
+  const vagrant = childProcess.spawn('vagrant', ['provision'], {
+    cwd: `${process.env.HOME}/Homestead`,
+  });
+
+  vagrant.stdout.on('data', (data) => {
+    event.sender.send('run-provisioning', data.toString())
+  });
+
+  vagrant.stderr.on('data', (data) => {
+    event.sender.send('run-provisioning', `Ooops something went wrong: ${data}`)
+  });
+
+  vagrant.on('close', () => {
+    event.sender.send('run-provisioning', '<=======================>')
+    event.sender.send('run-provisioning', 'Finished provisioning.')
+  });
 })

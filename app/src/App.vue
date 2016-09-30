@@ -204,6 +204,8 @@
   import { mapGetters } from 'vuex';
   import _ from 'lodash';
   const { ipcRenderer } = require('electron');
+  import shellEnv from 'shell-env';
+  import shellPath from 'shell-path';
 
   export default {
     components: {
@@ -231,7 +233,9 @@
             status: arg,
           });
         });
-        ipcRenderer.send('machine-status', process.env);
+        const env = process.env;
+        env.PATH = shellPath.sync();
+        ipcRenderer.send('machine-status', env);
       },
     },
   };

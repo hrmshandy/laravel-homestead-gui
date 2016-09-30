@@ -10,6 +10,5 @@
     "vue-router": "next",
     "vuex": "next"
   },
-  "devDependencies": {},
   "author": "Chris E <chris@sourcecube.de>"
 }
