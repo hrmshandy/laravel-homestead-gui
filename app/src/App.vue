@@ -185,9 +185,9 @@
         <router-link to="/" class="navigation__link">
           <i class="material-icons">home</i> Home
         </router-link>
-        <router-link to="/settings" class="navigation__link">
+        <span class="navigation__link">
           <i class="material-icons">settings</i> Settings
-        </router-link>
+        </span>
         <router-link v-for="(value, key) in settings" v-bind:to="'/setting/' + key" class="navigation__link navigation__link--sublink">
           <i class="material-icons">subdirectory_arrow_right</i> {{ capitalize(key) }}
         </router-link>
@@ -204,7 +204,6 @@
   import { mapGetters } from 'vuex';
   import _ from 'lodash';
   const { ipcRenderer } = require('electron');
-  import shellEnv from 'shell-env';
   import shellPath from 'shell-path';
 
   export default {
