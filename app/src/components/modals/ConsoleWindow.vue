@@ -56,7 +56,6 @@
   </transition>
 </template>
 <script>
-  const childProcess = require('child_process');
   import { mapGetters } from 'vuex';
   const { ipcRenderer } = require('electron');
 
