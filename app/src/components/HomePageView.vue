@@ -23,8 +23,7 @@
         <br>
         You should consider to create a backup of your <code>homestead.yaml</code> file.
         <br>
-        Nevertheless I'm using the app myself, but if you are not sure thing
-        twice before using it.
+        Please report any issues on Github. Contributions are welcome.
       </p>
     </article>
   </div>
